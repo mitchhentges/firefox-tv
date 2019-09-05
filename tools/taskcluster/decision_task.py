@@ -16,7 +16,7 @@ def landed(builder):
 
 
 def release(builder, tag):
-    return (taskcluster.slugId(), builder.craft_release_task(tag)),
+    return (taskcluster.slugId(), builder.craft_release_build_task(tag)),
 
 
 def main():
