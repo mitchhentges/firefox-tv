@@ -103,15 +103,14 @@ class TaskBuilder:
 
     def craft_email_task(self, sign_task_id, tag):
         script = f'''
-        apt update
-        && apt install -y python3-pip
-        && pip3 install taskcluster
-        && taskcluster api notify email << EOM
+        wget https://github.com/taskcluster/taskcluster-cli/releases/download/v0.9.0/taskcluster-linux-amd64
+        && chmod +x taskcluster-linux-amd64
+        && ./taskcluster-linux-amd64 api notify email << EOM
         {{
             "address": "{NOTIFY_EMAIL_ADDRESS}",
             "content": "Download the APK and attach it to the [Github release](https://github.com/mitchhentges/firefox-tv/releases/tag/{tag})",
             "link": {{
-                "href": "https://mozilla.com",
+                "href": "https://queue.taskcluster.net/v1/task/{sign_task_id}/artifacts/public/build/target.apk",
                 "text": "{tag} APK"
             }},
             "subject": "{tag} Github release artifact is signed"
@@ -128,7 +127,7 @@ class TaskBuilder:
         )
 
     def _craft_shell_task(self, name, script, scopes, artifacts, *, dependencies=(), chain_of_trust=False):
-        trimmed_script = ' '.join([line.strip() for line in script.split('\n') if line.strip()])
+        trimmed_script = '\n'.join([line.strip() for line in script.split('\n') if line.strip()])
         bash_command = [
             '/bin/bash',
             '--login',
