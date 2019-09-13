@@ -5,7 +5,7 @@ import os
 import taskcluster
 
 
-NOTIFY_EMAIL_ADDRESS = 'firefox-tv@mozilla.com'
+NOTIFY_EMAIL_ADDRESS = 'mhentges@mozilla.com'
 
 
 def script_to_bash_command(script):
@@ -109,7 +109,7 @@ class TaskBuilder:
         && taskcluster api notify email << EOM
         {{
             "address": "{NOTIFY_EMAIL_ADDRESS}",
-            "content": "Download the APK and attach it to the [Github release](https://github.com/mozilla-mobile/firefox-tv/releases/tag/{tag})",
+            "content": "Download the APK and attach it to the [Github release](https://github.com/mitchhentges/firefox-tv/releases/tag/{tag})",
             "link": {{
                 "href": "https://mozilla.com",
                 "text": "{tag} APK"
