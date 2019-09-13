@@ -15,8 +15,13 @@ def landed(builder):
     return (taskcluster.slugId(), builder.craft_landed_task()),
 
 
-def release(builder, tag):
-    return (taskcluster.slugId(), builder.craft_release_build_task(tag)),
+def release(builder, tag, is_staging):
+    build_task_id = taskcluster.slugId()
+    return (
+        (build_task_id, builder.craft_release_build_task(tag)),
+        (taskcluster.slugId(), builder.craft_sign_for_github_task(build_task_id, is_staging)),
+        (taskcluster.slugId(), builder.craft_amazon_task(build_task_id, is_staging)),
+    )
 
 
 def main():
@@ -45,8 +50,9 @@ def main():
         builder = TaskBuilder(result.author, repo_url, commit, task_group_id)
         ordered_tasks = landed(builder)
     elif command == 'release':
+        is_staging = repo_url != 'https://github.com/mozilla-mobile/firefox-tv'
         builder = TaskBuilder('firefox-tv@mozilla.com', repo_url, commit, task_group_id)
-        ordered_tasks = release(builder, result.tag)
+        ordered_tasks = release(builder, result.tag, is_staging)
     else:
         raise ValueError('A command ("pull-request", "landed" or "release") must be provided to '
                          'the decision task')
