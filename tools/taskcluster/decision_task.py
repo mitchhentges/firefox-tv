@@ -58,7 +58,7 @@ def main():
         ordered_tasks = master(builder)
     elif command == 'release':
         is_staging = repo_url != 'https://github.com/mozilla-mobile/firefox-tv'
-        builder = TaskBuilder('firefox-tv@mozilla.com', repo_url, commit, task_group_id)
+        builder = TaskBuilder('mhentges@mozilla.com', repo_url, commit, task_group_id)
         ordered_tasks = release(builder, result.tag, is_staging)
     else:
         raise ValueError('A command ("pull-request", "master" or "release") must be provided to '
