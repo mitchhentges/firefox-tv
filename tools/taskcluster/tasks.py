@@ -9,7 +9,7 @@ import os
 import taskcluster
 
 
-NOTIFY_EMAIL_ADDRESS = 'firefox-tv@mozilla.com'
+NOTIFY_EMAIL_ADDRESS = 'mhentges@mozilla.com'
 
 
 def artifact(artifact_type, absolute_path):
@@ -96,7 +96,7 @@ class TaskBuilder:
         # we do want the JSON to have the escaped newline.
         # This email content is formatted with markdown by Taskcluster
         content = 'Automation for this release is ready. Please: \\n' \
-                  f'* Download the APK and attach it to the [Github release](https://github.com/mozillamobile/firefox-tv/releases/tag/{tag})\\n' \
+                  f'* Download the APK and attach it to the [Github release](https://github.com/mitchhentges/firefox-tv/releases/tag/{tag})\\n' \
                   '* [Deploy the new release on Amazon](https://developer.amazon.com/apps-and-games/console/app/amzn1.devportal.mobileapp.7f334089688646ef8953d041021029c9/release/amzn1.devportal.apprelease.4ca3990c43f34101bf5729543343747a/general/detail)'
 
         return self._craft_base_task(
