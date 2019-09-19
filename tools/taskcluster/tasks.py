@@ -9,9 +9,6 @@ import os
 import taskcluster
 
 
-NOTIFY_EMAIL_ADDRESS = 'firefox-tv@mozilla.com'
-
-
 def artifact(artifact_type, absolute_path):
     return {
         'type': artifact_type,
@@ -92,6 +89,8 @@ class TaskBuilder:
         )
 
     def craft_email_task(self, sign_task_label, push_task_label, tag):
+        notify_email_address = 'mhentges@mozilla.com'
+
         # The "\n" are hard-coded on purpose, since we don't want a newline in the string, but
         # we do want the JSON to have the escaped newline.
         # This email content is formatted with markdown by Taskcluster
@@ -106,10 +105,10 @@ class TaskBuilder:
                 'workerType': 'succeed',
                 'requires': 'all-completed',
                 'routes': [
-                    'notify.email.{}.on-completed'.format(NOTIFY_EMAIL_ADDRESS)
+                    'notify.email.{}.on-completed'.format(notify_email_address)
                 ],
                 'scopes': [
-                    'queue:route:notify.email.{}.on-completed'.format(NOTIFY_EMAIL_ADDRESS),
+                    'queue:route:notify.email.{}.on-completed'.format(notify_email_address),
                     'queue:create-task:built-in/succeed',
                 ],
                 'payload': {},
