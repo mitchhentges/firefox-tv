@@ -33,5 +33,7 @@ def build_task(config, tasks):
         del task["worker"]["script"]
         task["worker"]["command"] = bash_command
         task["worker"].setdefault("artifacts", [])
+        task["worker"]["taskcluster-proxy"] = True
+        task["worker"]["chain-of-trust"] = True
 
         yield task
