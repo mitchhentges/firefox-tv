@@ -1,0 +1,30 @@
+{
+  "actions": [],
+  "variables": {
+    "parameters": {
+      "base_repository": "https://github.com/mozilla-mobile/firefox-tv",
+      "build_date": 1,
+      "do_not_optimize": [],
+      "existing_tasks": {},
+      "filters": [
+        "target_tasks_method"
+      ],
+      "head_ref": "2842-taskgraph",
+      "head_repository": "https://github.com/mozilla-mobile/firefox-tv",
+      "head_rev": "2b16cef41b7019a75964f8debf66c592c62367f7",
+      "head_tag": "v30",
+      "hg_branch": null,
+      "level": "3",
+      "moz_build_date": "19700101000001",
+      "optimize_target_tasks": true,
+      "owner": "mhentges@mozilla.com",
+      "project": "probably",
+      "pushdate": 1,
+      "pushlog_id": "1",
+      "repository_type": "git",
+      "target_tasks_method": "default",
+      "tasks_for": "github-release"
+    }
+  },
+  "version": 1
+}

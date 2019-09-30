@@ -1,0 +1,611 @@
+{
+  "Email that automation is complete": {
+    "attributes": {
+      "always_target": false,
+      "kind": "email",
+      "run_on_projects": [
+        "all"
+      ],
+      "run_on_tasks_for": [
+        "github-release"
+      ]
+    },
+    "dependencies": {
+      "push": "Push to Amazon",
+      "sign": "Sign for Github"
+    },
+    "kind": "email",
+    "label": "Email that automation is complete",
+    "optimization": null,
+    "soft_dependencies": [],
+    "task": {
+      "created": {
+        "relative-datestamp": "0 seconds"
+      },
+      "deadline": {
+        "relative-datestamp": "1 day"
+      },
+      "expires": {
+        "relative-datestamp": "1 year"
+      },
+      "extra": {
+        "index": {
+          "rank": 0
+        },
+        "notify": {
+          "email": {
+            "content": "Automation for this release is ready. Please:\n* Download the APK and attach it to the [Github release](https://github.com/mozilla-mobile/firefox-tv/releases/tag/v30)\n* [Deploy the new release on Amazon](https://developer.amazon.com/apps-and-games/console/app/amzn1.devportal.mobileapp.7f334089688646ef8953d041021029c9/release/amzn1.devportal.apprelease.4ca3990c43f34101bf5729543343747a/general/detail)\n",
+            "link": {
+              "href": {
+                "artifact-reference": "<sign/public/build/target.apk>"
+              },
+              "text": "v30 APK"
+            },
+            "subject": "Release v30 is ready for deployment"
+          }
+        },
+        "parent": "task_id"
+      },
+      "metadata": {
+        "description": "",
+        "name": "Email that automation is complete",
+        "owner": "mhentges@mozilla.com",
+        "source": "https://github.com/mozilla-mobile/firefox-tv/blob/2b16cef41b7019a75964f8debf66c592c62367f7/taskcluster/ci/email"
+      },
+      "payload": {},
+      "priority": "highest",
+      "provisionerId": "built-in",
+      "routes": [
+        "notify.email.firefox-tv@mozilla.com.on-completed",
+        "checks"
+      ],
+      "scopes": [
+        "queue:route:notify.email.firefox-tv@mozilla.com.on-completed"
+      ],
+      "tags": {
+        "createdForUser": "mhentges@mozilla.com",
+        "kind": "email",
+        "label": "Email that automation is complete",
+        "worker-implementation": "succeed"
+      },
+      "workerType": "succeed"
+    }
+  },
+  "Push to Amazon": {
+    "attributes": {
+      "always_target": false,
+      "kind": "push-apk",
+      "run_on_projects": [
+        "all"
+      ],
+      "run_on_tasks_for": [
+        "github-release"
+      ]
+    },
+    "dependencies": {
+      "build": "build-release"
+    },
+    "kind": "push-apk",
+    "label": "Push to Amazon",
+    "optimization": null,
+    "soft_dependencies": [],
+    "task": {
+      "created": {
+        "relative-datestamp": "0 seconds"
+      },
+      "deadline": {
+        "relative-datestamp": "1 day"
+      },
+      "expires": {
+        "relative-datestamp": "1 year"
+      },
+      "extra": {
+        "index": {
+          "rank": 0
+        },
+        "parent": "task_id"
+      },
+      "metadata": {
+        "description": "",
+        "name": "Push to Amazon",
+        "owner": "mhentges@mozilla.com",
+        "source": "https://github.com/mozilla-mobile/firefox-tv/blob/2b16cef41b7019a75964f8debf66c592c62367f7/taskcluster/ci/push-apk"
+      },
+      "payload": {
+        "channel": "production",
+        "target_store": "amazon",
+        "upstreamArtifacts": [
+          {
+            "paths": [
+              "public/build/target.apk"
+            ],
+            "taskId": {
+              "task-reference": "<build>"
+            },
+            "taskType": "build"
+          }
+        ]
+      },
+      "priority": "highest",
+      "provisionerId": "scriptworker-prov-v1",
+      "routes": [
+        "checks"
+      ],
+      "scopes": [
+        "project:mobile:firefox-tv:releng:googleplay:product:firefox-tv:dep"
+      ],
+      "tags": {
+        "createdForUser": "mhentges@mozilla.com",
+        "kind": "push-apk",
+        "label": "Push to Amazon",
+        "os": "scriptworker",
+        "worker-implementation": "scriptworker"
+      },
+      "workerType": "mobile-pushapk-v1"
+    }
+  },
+  "Sign for Github": {
+    "attributes": {
+      "always_target": false,
+      "kind": "signing",
+      "run_on_projects": [
+        "all"
+      ],
+      "run_on_tasks_for": [
+        "github-release"
+      ]
+    },
+    "dependencies": {
+      "build": "build-release"
+    },
+    "kind": "signing",
+    "label": "Sign for Github",
+    "optimization": null,
+    "soft_dependencies": [],
+    "task": {
+      "created": {
+        "relative-datestamp": "0 seconds"
+      },
+      "deadline": {
+        "relative-datestamp": "1 day"
+      },
+      "expires": {
+        "relative-datestamp": "1 year"
+      },
+      "extra": {
+        "index": {
+          "rank": 0
+        },
+        "parent": "task_id"
+      },
+      "metadata": {
+        "description": "",
+        "name": "Sign for Github",
+        "owner": "mhentges@mozilla.com",
+        "source": "https://github.com/mozilla-mobile/firefox-tv/blob/2b16cef41b7019a75964f8debf66c592c62367f7/taskcluster/ci/signing"
+      },
+      "payload": {
+        "maxRunTime": 600,
+        "upstreamArtifacts": [
+          {
+            "formats": [
+              "autograph_apk"
+            ],
+            "paths": [
+              "public/build/target.apk"
+            ],
+            "taskId": {
+              "task-reference": "<build>"
+            },
+            "taskType": "build"
+          }
+        ]
+      },
+      "priority": "highest",
+      "provisionerId": "scriptworker-prov-v1",
+      "routes": [
+        "checks"
+      ],
+      "scopes": [
+        "project:mobile:firefox-tv:releng:signing:cert:dep-signing",
+        "project:mobile:firefox-tv:releng:signing:format:autograph_apk"
+      ],
+      "tags": {
+        "createdForUser": "mhentges@mozilla.com",
+        "kind": "signing",
+        "label": "Sign for Github",
+        "os": "scriptworker",
+        "worker-implementation": "scriptworker"
+      },
+      "workerType": "mobile-signing-v1"
+    }
+  },
+  "build-docker-image-android": {
+    "attributes": {
+      "always_target": false,
+      "cached_task": {
+        "digest": "55dfa7fdbd36bc5c84d0feff2c2f93422a1c51d9534df75568fab500de00683b",
+        "name": "android",
+        "type": "docker-images.v2"
+      },
+      "image_name": "android",
+      "kind": "docker-image",
+      "run_on_projects": [],
+      "run_on_tasks_for": [
+        "all"
+      ]
+    },
+    "dependencies": {},
+    "kind": "docker-image",
+    "label": "build-docker-image-android",
+    "optimization": {
+      "index-search": [
+        "project.mobile.firefox-tv.cache.level-3.docker-images.v2.android.hash.55dfa7fdbd36bc5c84d0feff2c2f93422a1c51d9534df75568fab500de00683b"
+      ]
+    },
+    "soft_dependencies": [],
+    "task": {
+      "created": {
+        "relative-datestamp": "0 seconds"
+      },
+      "deadline": {
+        "relative-datestamp": "1 day"
+      },
+      "expires": {
+        "relative-datestamp": "1 year"
+      },
+      "extra": {
+        "index": {
+          "rank": 0
+        },
+        "parent": "task_id"
+      },
+      "metadata": {
+        "description": "Build the docker image android for use by dependent tasks",
+        "name": "build-docker-image-android",
+        "owner": "mhentges@mozilla.com",
+        "source": "https://github.com/mozilla-mobile/firefox-tv/blob/2b16cef41b7019a75964f8debf66c592c62367f7/taskcluster/ci/docker-image"
+      },
+      "payload": {
+        "artifacts": {
+          "public/image.tar.zst": {
+            "expires": {
+              "relative-datestamp": "1 year"
+            },
+            "path": "/builds/worker/workspace/artifacts/image.tar.zst",
+            "type": "file"
+          }
+        },
+        "cache": {
+          "mobile-level-3-imagebuilder-v3": "/builds/worker/checkouts"
+        },
+        "env": {
+          "DOCKER_IMAGE_PACKAGES": {
+            "task-reference": ""
+          },
+          "DOCKER_IMAGE_ZSTD_LEVEL": "10",
+          "HASH": "36f9ee99464f21a5b0330d743f861e64de2e506372f5ce91502fde89f13191b3",
+          "HG_STORE_PATH": "/builds/worker/checkouts/hg-store",
+          "IMAGE_NAME": "android",
+          "MOZ_AUTOMATION": "1",
+          "PROJECT": "probably",
+          "SCCACHE_DISABLE": "1",
+          "VCS_BASE_REPOSITORY": "https://github.com/mozilla-mobile/firefox-tv",
+          "VCS_HEAD_REPOSITORY": "https://github.com/mozilla-mobile/firefox-tv",
+          "VCS_HEAD_REV": "2b16cef41b7019a75964f8debf66c592c62367f7",
+          "VCS_REPOSITORY_TYPE": "git"
+        },
+        "features": {
+          "chainOfTrust": true,
+          "dind": true,
+          "taskclusterProxy": true
+        },
+        "image": "mozillareleases/taskgraph:image_builder-19e0076d8238e9398db04369692def2237ee2e6019a9616cf80be2408bd9bb5e@sha256:ced5cd043ec5111940ff2138324c177d2f89627a5e814b1d5f628aca16d4c0ff",
+        "maxRunTime": 7200,
+        "onExitStatus": {
+          "retry": [
+            100
+          ]
+        }
+      },
+      "priority": "highest",
+      "provisionerId": "aws-provisioner-v1",
+      "routes": [
+        "index.project.mobile.firefox-tv.cache.level-3.docker-images.v2.android.hash.55dfa7fdbd36bc5c84d0feff2c2f93422a1c51d9534df75568fab500de00683b",
+        "index.project.mobile.firefox-tv.cache.level-3.docker-images.v2.android.latest",
+        "index.project.mobile.firefox-tv.cache.level-3.docker-images.v2.android.pushdate.1970.01.01.19700101000001",
+        "checks"
+      ],
+      "scopes": [
+        "docker-worker:cache:mobile-level-3-imagebuilder-v3"
+      ],
+      "tags": {
+        "createdForUser": "mhentges@mozilla.com",
+        "kind": "docker-image",
+        "label": "build-docker-image-android"
+      },
+      "workerType": "mobile-3-images"
+    }
+  },
+  "build-master": {
+    "attributes": {
+      "always_target": false,
+      "kind": "build",
+      "run_on_projects": [
+        "all"
+      ],
+      "run_on_tasks_for": [
+        "github-push"
+      ]
+    },
+    "dependencies": {
+      "docker-image": "build-docker-image-android"
+    },
+    "kind": "build",
+    "label": "build-master",
+    "optimization": null,
+    "soft_dependencies": [],
+    "task": {
+      "created": {
+        "relative-datestamp": "0 seconds"
+      },
+      "deadline": {
+        "relative-datestamp": "1 day"
+      },
+      "expires": {
+        "relative-datestamp": "1 year"
+      },
+      "extra": {
+        "chainOfTrust": {
+          "inputs": {
+            "docker-image": {
+              "task-reference": "<docker-image>"
+            }
+          }
+        },
+        "index": {
+          "rank": 0
+        },
+        "parent": "task_id"
+      },
+      "metadata": {
+        "description": "Build Firefox for Amazon's Fire TV",
+        "name": "build-master",
+        "owner": "mhentges@mozilla.com",
+        "source": "https://github.com/mozilla-mobile/firefox-tv/blob/2b16cef41b7019a75964f8debf66c592c62367f7/taskcluster/ci/build"
+      },
+      "payload": {
+        "artifacts": {},
+        "command": [
+          "/bin/bash",
+          "--login",
+          "-c",
+          "cat <<'SCRIPT' > ../script.sh && bash -e ../script.sh\nexport TERM=dumb\ngit fetch https://github.com/mozilla-mobile/firefox-tv\ngit config advice.detachedHead false\ngit checkout 2b16cef41b7019a75964f8debf66c592c62367f7\nyes | sdkmanager --licenses\n./gradlew -PisPullRequest clean assembleSystem assembleAndroidTest lint checkstyle ktlint pmd detekt test\npython ./tools/taskcluster/get-bitbar-token.py\npython ./tools/taskcluster/execute-bitbar-test.py system/debug app-system-debug\n\nSCRIPT"
+        ],
+        "env": {
+          "MOZ_AUTOMATION": "1",
+          "SCCACHE_DISABLE": "1"
+        },
+        "features": {
+          "chainOfTrust": true,
+          "taskclusterProxy": true
+        },
+        "image": {
+          "path": "public/image.tar.zst",
+          "taskId": {
+            "task-reference": "<docker-image>"
+          },
+          "type": "task-image"
+        },
+        "maxRunTime": 3600,
+        "onExitStatus": {}
+      },
+      "priority": "highest",
+      "provisionerId": "aws-provisioner-v1",
+      "routes": [
+        "checks"
+      ],
+      "scopes": [
+        "secrets:get:project/mobile/firefox-tv/tokens"
+      ],
+      "tags": {
+        "createdForUser": "mhentges@mozilla.com",
+        "kind": "build",
+        "label": "build-master",
+        "os": "linux",
+        "worker-implementation": "docker-worker"
+      },
+      "workerType": "mobile-3-b-firefox-tv"
+    }
+  },
+  "build-pr": {
+    "attributes": {
+      "always_target": false,
+      "kind": "build",
+      "run_on_projects": [
+        "all"
+      ],
+      "run_on_tasks_for": [
+        "github-pull-request"
+      ]
+    },
+    "dependencies": {
+      "docker-image": "build-docker-image-android"
+    },
+    "kind": "build",
+    "label": "build-pr",
+    "optimization": null,
+    "soft_dependencies": [],
+    "task": {
+      "created": {
+        "relative-datestamp": "0 seconds"
+      },
+      "deadline": {
+        "relative-datestamp": "1 day"
+      },
+      "expires": {
+        "relative-datestamp": "1 year"
+      },
+      "extra": {
+        "chainOfTrust": {
+          "inputs": {
+            "docker-image": {
+              "task-reference": "<docker-image>"
+            }
+          }
+        },
+        "index": {
+          "rank": 0
+        },
+        "parent": "task_id"
+      },
+      "metadata": {
+        "description": "Build Firefox for Amazon's Fire TV",
+        "name": "build-pr",
+        "owner": "mhentges@mozilla.com",
+        "source": "https://github.com/mozilla-mobile/firefox-tv/blob/2b16cef41b7019a75964f8debf66c592c62367f7/taskcluster/ci/build"
+      },
+      "payload": {
+        "artifacts": {},
+        "command": [
+          "/bin/bash",
+          "--login",
+          "-c",
+          "cat <<'SCRIPT' > ../script.sh && bash -e ../script.sh\nexport TERM=dumb\ngit fetch https://github.com/mozilla-mobile/firefox-tv 2842-taskgraph\ngit config advice.detachedHead false\ngit checkout 2b16cef41b7019a75964f8debf66c592c62367f7\nyes | sdkmanager --licenses\n./gradlew -PisPullRequest clean assembleSystem assembleAndroidTest lint checkstyle ktlint pmd detekt test\n./gradlew -Pcoverage jacocoSystemDebugTestReport\n./tools/taskcluster/upload-coverage-report.sh\n./tools/taskcluster/download-firebase-sdk.sh\n./tools/taskcluster/google-firebase-testlab-login.sh\n./tools/taskcluster/execute-firebase-test.sh system/debug app-system-debug model=sailfish,version=25,orientation=landscape\n\nSCRIPT"
+        ],
+        "env": {
+          "MOZ_AUTOMATION": "1",
+          "SCCACHE_DISABLE": "1"
+        },
+        "features": {
+          "chainOfTrust": true,
+          "taskclusterProxy": true
+        },
+        "image": {
+          "path": "public/image.tar.zst",
+          "taskId": {
+            "task-reference": "<docker-image>"
+          },
+          "type": "task-image"
+        },
+        "maxRunTime": 3600,
+        "onExitStatus": {}
+      },
+      "priority": "highest",
+      "provisionerId": "aws-provisioner-v1",
+      "routes": [
+        "checks"
+      ],
+      "scopes": [
+        "secrets:get:project/mobile/firefox-tv/tokens"
+      ],
+      "tags": {
+        "createdForUser": "mhentges@mozilla.com",
+        "kind": "build",
+        "label": "build-pr",
+        "os": "linux",
+        "worker-implementation": "docker-worker"
+      },
+      "workerType": "mobile-3-b-firefox-tv"
+    }
+  },
+  "build-release": {
+    "attributes": {
+      "always_target": false,
+      "kind": "build",
+      "run_on_projects": [
+        "all"
+      ],
+      "run_on_tasks_for": [
+        "github-release"
+      ]
+    },
+    "dependencies": {
+      "docker-image": "build-docker-image-android"
+    },
+    "kind": "build",
+    "label": "build-release",
+    "optimization": null,
+    "soft_dependencies": [],
+    "task": {
+      "created": {
+        "relative-datestamp": "0 seconds"
+      },
+      "deadline": {
+        "relative-datestamp": "1 day"
+      },
+      "expires": {
+        "relative-datestamp": "1 year"
+      },
+      "extra": {
+        "chainOfTrust": {
+          "inputs": {
+            "docker-image": {
+              "task-reference": "<docker-image>"
+            }
+          }
+        },
+        "index": {
+          "rank": 0
+        },
+        "parent": "task_id"
+      },
+      "metadata": {
+        "description": "Build Firefox for Amazon's Fire TV",
+        "name": "build-release",
+        "owner": "mhentges@mozilla.com",
+        "source": "https://github.com/mozilla-mobile/firefox-tv/blob/2b16cef41b7019a75964f8debf66c592c62367f7/taskcluster/ci/build"
+      },
+      "payload": {
+        "artifacts": {
+          "public/build/target.apk": {
+            "expires": {
+              "relative-datestamp": "1 year"
+            },
+            "path": "/opt/firefox-tv/app/build/outputs/apk/system/release/app-system-release-unsigned.apk",
+            "type": "file"
+          }
+        },
+        "command": [
+          "/bin/bash",
+          "--login",
+          "-c",
+          "cat <<'SCRIPT' > ../script.sh && bash -e ../script.sh\nexport TERM=dumb\ngit fetch https://github.com/mozilla-mobile/firefox-tv --tags\ngit config advice.detachedHead false\ngit checkout v30\nyes | sdkmanager --licenses\npython tools/taskcluster/get-sentry-token.py\npython tools/taskcluster/get-pocket-token.py\n./gradlew --no-daemon clean test assembleSystemRelease\n\nSCRIPT"
+        ],
+        "env": {
+          "MOZ_AUTOMATION": "1",
+          "SCCACHE_DISABLE": "1"
+        },
+        "features": {
+          "chainOfTrust": true,
+          "taskclusterProxy": true
+        },
+        "image": {
+          "path": "public/image.tar.zst",
+          "taskId": {
+            "task-reference": "<docker-image>"
+          },
+          "type": "task-image"
+        },
+        "maxRunTime": 3600,
+        "onExitStatus": {}
+      },
+      "priority": "highest",
+      "provisionerId": "aws-provisioner-v1",
+      "routes": [
+        "checks"
+      ],
+      "scopes": [
+        "secrets:get:project/mobile/firefox-tv/tokens"
+      ],
+      "tags": {
+        "createdForUser": "mhentges@mozilla.com",
+        "kind": "build",
+        "label": "build-release",
+        "os": "linux",
+        "worker-implementation": "docker-worker"
+      },
+      "workerType": "mobile-3-b-firefox-tv"
+    }
+  }
+}
